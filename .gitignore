@@ -1,0 +1,25 @@
+# Local APK samples and derived proprietary material
+*.apk
+*.apks
+*.aab
+*.dex
+*.odex
+*.vdex
+*.so
+*.obb
+*.unity3d
+*.bundle
+*.asset
+*.aar
+
+# Local reports and machine-specific state
+analysis/metadata/*.json
+analysis/metadata/*.csv
+analysis/runtime/*
+!analysis/runtime/README.md
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
