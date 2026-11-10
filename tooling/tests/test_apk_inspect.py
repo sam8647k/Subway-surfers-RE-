@@ -1,8 +1,13 @@
+import sys
 import tempfile
 import unittest
 import zipfile
 from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parents[1] / "scripts"
+sys.path.insert(0, str(SCRIPT_DIR))
 from apk_inspect import inspect_apk, safe_member_name
+
 
 class ApkInspectTests(unittest.TestCase):
     def make_apk(self, root: Path, manifest: bytes) -> Path:
@@ -31,13 +36,14 @@ class ApkInspectTests(unittest.TestCase):
 
     def test_binary_manifest_is_reported_not_guessed(self):
         with tempfile.TemporaryDirectory() as tmp:
-            report = inspect_apk(self.make_apk(Path(tmp), b"\x03\x00\x08\x00binary"))
+            report = inspect_apk(self.make_apk(Path(tmp), b"\\x03\\x00\\x08\\x00binary"))
         self.assertEqual(report["manifest"]["status"], "binary_or_unrecognized")
 
     def test_path_traversal_detection(self):
         self.assertFalse(safe_member_name("../outside"))
         self.assertFalse(safe_member_name("/absolute"))
         self.assertTrue(safe_member_name("assets/safe/file.bin"))
+
 
 if __name__ == "__main__":
     unittest.main()
